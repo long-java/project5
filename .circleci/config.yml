@@ -60,4 +60,4 @@ workflows:
     jobs:
       - test
       - docker-push:
-        requires: [test]
+          requires: [test]
