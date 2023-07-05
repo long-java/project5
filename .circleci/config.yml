@@ -2,7 +2,7 @@ version: 2.1
 
 
 jobs:
-  lint:
+  test:
     docker:
       - image: python:3.7.3-stretch
 
@@ -49,7 +49,7 @@ jobs:
       - run:
         name: push to Docker Hub
         command: |
-            docker login -u shalltearbloodfallen01 -p Long3900@
+            docker login -u "shalltearbloodfallen01" -p "Long3900@"
             docker tag prj5 shalltearbloodfallen01/prj5:v1
             docker push shalltearbloodfallen01/prj5:v1
 
@@ -58,6 +58,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - lint
+      - test
       - docker-push:
-        requires: [lint]
+        requires: [test]
