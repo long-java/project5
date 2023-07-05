@@ -49,9 +49,9 @@ jobs:
       - run:
         name: push to Docker Hub
         command: |
-            docker login -u "shalltearbloodfallen01" -p "Long3900@"
-            docker tag prj5 shalltearbloodfallen01/prj5:v1
-            docker push shalltearbloodfallen01/prj5:v1
+          docker login -u "shalltearbloodfallen01" -p "Long3900@"
+          docker tag prj5 shalltearbloodfallen01/prj5:v1
+          docker push shalltearbloodfallen01/prj5:v1
 
 
 
