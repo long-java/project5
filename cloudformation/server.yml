@@ -1,0 +1,51 @@
+Description: >
+    Carlos Rivas / Udacity 2019
+Parameters:
+
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${EnvironmentName}-instance-prj5
+      GroupDescription: Allow port 22 and port 3030.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3030
+          ToPort: 3030
+          CidrIp: 0.0.0.0/0
+
+  instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: udapeople
+      ImageId: ami-068663a3c619dd892
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-instance1
+        - Key: Project
+          Value: !Ref EnvironmentName
+
+  instance2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      KeyName: !Ref SSHKeyName
+      ImageId: ami-068663a3c619dd892
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName}-instance2
+        - Key: Project
+          Value: !Ref EnvironmentName
