@@ -59,3 +59,5 @@ workflows:
   default:
     jobs:
       - lint
+      - docker-push:
+        requires: [lint]
