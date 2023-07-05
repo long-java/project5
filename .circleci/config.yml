@@ -46,7 +46,7 @@ jobs:
           docker build --tag=prj5 .
           docker image ls
 
-      - run
+      - run:
         name: push to Docker Hub
         command: |
             docker login -u shalltearbloodfallen01 -p Long3900@
