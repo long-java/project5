@@ -91,7 +91,7 @@ jobs:
                 --template-file cloudformation/network.yml \
                 --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
                 --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-network-prj5" \
-                --parameter-overrides cloudformation/network-parameters.json
+                --parameter-overrides file://cloudformation/network-parameters.json
 
       - run:
           name: stack kubernet
@@ -100,7 +100,7 @@ jobs:
               --template-file cloudformation/kuber.yml \
               --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
               --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-kuber-prj5" \
-              --parameter-overrides cloudformation/kuber-parameters.json
+              --parameter-overrides file://cloudformation/kuber-parameters.json
 
       - run:
           name: stack server
@@ -109,7 +109,7 @@ jobs:
               --template-file cloudformation/server.yml \
               --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
               --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
-              --parameter-overrides cloudformation/server-parameters.json
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
