@@ -170,4 +170,4 @@ Outputs:
         Description: Security group for kuber
         Value: !Ref SecurityGroup1
         Export:
-        Name: !Sub ${EnvironmentName}-SecurityGroupIds
+          Name: !Sub ${EnvironmentName}-SecurityGroupIds
