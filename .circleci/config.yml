@@ -88,28 +88,28 @@ jobs:
             name: stack network
             command: |
               aws --region us-east-1 cloudformation deploy \
-                --template-file /cloudformation/network.yml \
+                --template-file ~/cloudformation/network.yml \
                 --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
                 --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-network-prj5" \
-                --parameter-overrides /cloudformation/network-parameters.json
+                --parameter-overrides ~/cloudformation/network-parameters.json
 
       - run:
           name: stack kubernet
           command: |
             aws --region us-east-1 cloudformation deploy \
-              --template-file /cloudformation/kuber.yml \
+              --template-file ~/cloudformation/kuber.yml \
               --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
               --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-kuber-prj5" \
-              --parameter-overrides /cloudformation/kuber-parameters.json
+              --parameter-overrides ~/cloudformation/kuber-parameters.json
 
       - run:
           name: stack server
           command: |
             aws --region us-east-1 cloudformation deploy \
-              --template-file /cloudformation/server.yml \
+              --template-file ~/cloudformation/server.yml \
               --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
               --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
-              --parameter-overrides /cloudformation/server-parameters.json
+              --parameter-overrides ~/cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
