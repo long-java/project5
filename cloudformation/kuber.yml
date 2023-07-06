@@ -65,4 +65,4 @@ Resources:
           Fn::Split:
             - ","
             - Fn::ImportValue:
-                Fn::Sub: ${EnvironmentName}-subnet
+                Fn::Sub: ${EnvironmentName}-PUB-NETS
