@@ -60,7 +60,7 @@ Resources:
       RoleArn: !GetAtt EKSRoleCustom.Arn
       ResourcesVpcConfig:
         SecurityGroupIds:
-          - Fn::ImportValue: !Sub ${EnvironmentName}-SecurityGroupId
+          - Fn::ImportValue: !Sub ${EnvironmentName}-SecurityGroupIds
         SubnetIds:
           Fn::Split:
             - ","

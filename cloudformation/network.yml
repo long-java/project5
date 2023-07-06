@@ -122,6 +122,17 @@ Resources:
             RouteTableId: !Ref PublicRouteTable
             SubnetId: !Ref PublicSubnet2
 
+    SecurityGroup1:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: for kuber
+            VpcId: !Ref VPC
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                    FromPort: 80
+                    ToPort: 80
+                    CidrIp: 0.0.0.0/0
+
 
 Outputs: 
 
@@ -154,3 +165,9 @@ Outputs:
         Value: !Ref PublicSubnet2
         Export:
           Name: !Sub ${EnvironmentName}-PUB2-SN
+
+    SecurityGroup:
+        Description: Security group for kuber
+        Value: !Ref SecurityGroup1
+        Export:
+        Name: !Sub ${EnvironmentName}-SecurityGroupIds
