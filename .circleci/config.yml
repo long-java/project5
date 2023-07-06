@@ -72,6 +72,58 @@ jobs:
             docker push shalltearbloodfallen01/prj5:v1
 
 
+  deploy-infrastructure:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: amazon/aws-cli
+    steps:
+      # Checkout code from git
+      - checkout
+      # fix ERROR: tar utility is not present in this image but it is required. Please install it to have workflow workspace capability.
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
+      - run:
+            name: stack network
+            command: |
+              aws --region us-east-1 cloudformation deploy \
+                --template-file /cloudformation/network.yml \
+                --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
+                --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-network-prj5" \
+                --parameter-overrides /cloudformation/network-parameters.json
+
+      - run:
+          name: stack kubernet
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file /cloudformation/kuber.yml \
+              --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
+              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-kuber-prj5" \
+              --parameter-overrides /cloudformation/kuber-parameters.json
+
+      - run:
+          name: stack server
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file /cloudformation/server.yml \
+              --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
+              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
+              --parameter-overrides /cloudformation/server-parameters.json
+
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            aws --region us-east-1 ec2 describe-instances \
+              --query "Reservations[*].Instances[*].[PublicIpAddress]" \
+              --filters "Name=tag:Name,Values=${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
+              --output text >> ~/inventory.txt
+              cat ~/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - inventory.txt
+
 
 workflows:
   default:
@@ -79,3 +131,4 @@ workflows:
       - test
       - docker-push:
           requires: [test]
+      - deploy-infrastructure
