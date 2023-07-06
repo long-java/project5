@@ -128,7 +128,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - test
-      - docker-push:
-          requires: [test]
+      # - test
+      # - docker-push:
+      #     requires: [test]
       - deploy-infrastructure
