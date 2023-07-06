@@ -87,6 +87,7 @@ jobs:
       - run:
             name: stack network
             command: |
+              echo ${ENVIRONMENT_NAME}
               aws --region us-east-1 cloudformation deploy \
                 --template-file cloudformation/network.yml \
                 --tags project=${ENVIRONMENT_NAME}-prj5 \
