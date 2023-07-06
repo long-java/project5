@@ -89,8 +89,8 @@ jobs:
             command: |
               aws --region us-east-1 cloudformation deploy \
                 --template-file cloudformation/network.yml \
-                --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
-                --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-network-prj5" \
+                --tags project=${ENVIRONMENT_NAME}-prj5 \
+                --stack-name "${ENVIRONMENT_NAME}-network-prj5" \
                 --parameter-overrides file://cloudformation/network-parameters.json
 
       - run:
@@ -98,17 +98,18 @@ jobs:
           command: |
             aws --region us-east-1 cloudformation deploy \
               --template-file cloudformation/kuber.yml \
-              --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
-              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-kuber-prj5" \
-              --parameter-overrides file://cloudformation/kuber-parameters.json
+              --tags project=${ENVIRONMENT_NAME}-prj5 \
+              --stack-name "${ENVIRONMENT_NAME}-kuber-prj5" \
+              --parameter-overrides file://cloudformation/kuber-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
       - run:
           name: stack server
           command: |
             aws --region us-east-1 cloudformation deploy \
               --template-file cloudformation/server.yml \
-              --tags project=${CIRCLE_WORKFLOW_ID:0:7}-prj5 \
-              --stack-name "${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
+              --tags project=${ENVIRONMENT_NAME}-prj5 \
+              --stack-name "${ENVIRONMENT_NAME}-server-prj5" \
               --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
@@ -116,7 +117,7 @@ jobs:
           command: |
             aws --region us-east-1 ec2 describe-instances \
               --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-              --filters "Name=tag:Name,Values=${CIRCLE_WORKFLOW_ID:0:7}-server-prj5" \
+              --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-server-prj5" \
               --output text >> ~/inventory.txt
               cat ~/inventory.txt
       - persist_to_workspace:
