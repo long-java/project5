@@ -127,10 +127,38 @@ jobs:
             - inventory.txt
 
 
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+      - image: python:3.11-alpine3.17
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints: ["2c:84:c4:d2:e7:8e:df:a6:b5:5a:bc:aa:a1:bf:1d:5c"]
+      
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache ansible tar gzip aws-cli openssh
+      - run:
+          name: Configure server
+          command: |
+            # Your code here
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment
+
+
 workflows:
   default:
     jobs:
       # - test
       # - docker-push:
       #     requires: [test]
-      - deploy-infrastructure
+      # - deploy-infrastructure
