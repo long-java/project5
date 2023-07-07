@@ -23,8 +23,8 @@
         update_cache: yes
 
   roles:
-    - install-awscli
-    - install-kubectl
+    - awscli
+    - kubectl
 
 - name: "config kubectl"
   hosts: web
