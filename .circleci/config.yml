@@ -162,3 +162,4 @@ workflows:
       # - docker-push:
       #     requires: [test]
       # - deploy-infrastructure
+      - configure-infrastructure
