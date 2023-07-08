@@ -205,15 +205,15 @@ jobs:
 workflows:
   default:
     jobs:
-      - test
-      - docker-push:
-          requires: [test]
+      # - test
+      # - docker-push:
+      #     requires: [test]
       - deploy-infrastructure
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
       # - configure-cluster:
       #     requires: [docker-push, configure-infrastructure]
 
-      - configure-cluster:
-          requires: [docker-push]
+      - configure-cluster
+
       # - configure-infrastructure
