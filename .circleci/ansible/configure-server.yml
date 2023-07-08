@@ -64,4 +64,4 @@
   pre_tasks:
     # To update a kubeconfig for your cluster
     - name: To update a kubeconfig for your cluster
-      shell: "aws eks update-kubeconfig --region us-east-1 --name prj5-kuber-prj5"
+      shell: "aws eks update-kubeconfig --region us-east-1 --name prj5-cluster"
