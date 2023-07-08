@@ -6,7 +6,7 @@
   become: yes
   tasks:
     - name: get LDL dns
-      shell: "./bin/kubectl get svc prj5--service"
+      shell: "./bin/kubectl get svc prj5-service"
       register: elb_dns
       args:
         chdir: $HOME

@@ -176,19 +176,19 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-      - run:
-          name: configure kubernet
-          command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-kuber.yml
+      # - run:
+      #     name: configure kubernet
+      #     command: |
+      #       cd .circleci/ansible
+      #       cat inventory.txt
+      #       ansible-playbook -i inventory.txt configure-kuber.yml
 
-      - run:
-          name: wating to load
-          command: |
-            cat ~/project/.circleci/ansible/inventory.txt
-            echo "Waiting 60s !.."
-            sleep 60
+      # - run:
+      #     name: wating to load
+      #     command: |
+      #       cat ~/project/.circleci/ansible/inventory.txt
+      #       echo "Waiting 60s !.."
+      #       sleep 60
 
       - run:
           name: get lbl dns
