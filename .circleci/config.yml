@@ -148,6 +148,14 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache ansible tar gzip aws-cli openssh
+
+      - run:
+          name: "install aws"
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
       - run:
           no_output_timeout: 60m
           name: Configure server
