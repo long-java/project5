@@ -119,12 +119,12 @@ jobs:
             aws --region us-east-1 ec2 describe-instances \
               --query "Reservations[*].Instances[*].[PublicIpAddress]" \
               --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-server-prj5" \
-              --output text >> ~/inventory.txt
-              cat ~/inventory.txt
+              --output text >> ~/project/.circleci/ansible/inventory.txt
+              cat ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - inventory.txt
+            - - project/.circleci/ansible/inventory.txt
 
 
   configure-infrastructure:
@@ -161,5 +161,5 @@ workflows:
       # - test
       # - docker-push:
       #     requires: [test]
-      # - deploy-infrastructure
+      - deploy-infrastructure
       - configure-infrastructure
