@@ -1,0 +1,9 @@
+- name: configure deploy
+  copy:
+    src: "prj5-deploy.yaml"
+    dest: $HOME
+
+- name: configure deploy continue
+  shell: "./bin/kubectl apply -f prj5-deploy.yaml"
+  args:
+    chdir: $HOME

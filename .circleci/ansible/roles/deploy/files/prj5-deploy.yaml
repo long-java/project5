@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: deploy
+metadata:
+  name: prj5-deploy
+  labels:
+    app: prj5
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: prj5
+  template:
+    metadata:
+      labels:
+        app: prj5
+    spec:
+      containers:
+        - name: prj5
+          image: shalltearbloodfallen01/prj5
+          ports:
+            - containerPort: 80

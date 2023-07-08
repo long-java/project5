@@ -162,14 +162,58 @@ jobs:
       # - destroy-environment
 
 
+  configure-cluster:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["02:41:10:26:c2:d7:64:78:b1:66:01:a3:ce:34:b7:38"]
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+      - run:
+          name: configure kubernet
+          command: |
+            cat ~/inventory.txt
+            cd ansible
+            ansible-playbook -i ~/inventory.txt configure-kuber.yml
+
+      - run:
+          name: wating to load
+          command: |
+            cat ~/inventory.txt
+            echo "Waiting 60s !.."
+            sleep 60
+
+      - run:
+          name: get lbl dns
+          command: |
+            cd ansible
+            ansible-playbook -i ~/inventory.txt get-lbl-dns.yml
+            cat ~/lbl-dns.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - lbl-dns.txt
+
+
 workflows:
   default:
     jobs:
-      # - test
-      # - docker-push:
-      #     requires: [test]
+      - test
+      - docker-push:
+          requires: [test]
       - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - configure-cluster:
+      #     requires: [docker-push, configure-infrastructure]
 
+      - configure-cluster:
+          requires: [docker-push]
       # - configure-infrastructure
