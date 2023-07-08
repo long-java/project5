@@ -1,5 +1,13 @@
 ---
 
+- name: "install aws"
+  pre_tasks:
+    - name: "install aws"
+      command: |
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        unzip awscliv2.zip
+
 - name: "configuration play." 
   hosts: web
   user: ubuntu
@@ -21,12 +29,9 @@
         name: [ "unzip" ]
         state: latest
         update_cache: yes
-  
-    - name: "wait 30 seconds for target connection to become reachable/usable."
-      command: echo unzip --version
 
   roles:
-    - awscli
+    # - awscli
     - kubectl
 
 
