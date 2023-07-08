@@ -181,7 +181,7 @@ jobs:
           command: |
             cd .circleci/ansible
             cat inventory.txt
-            ansible-playbook -i inventory.txt configure-kuber.yml
+            ansible-playbook --region us-east-1 -i inventory.txt configure-kuber.yml
 
       - run:
           name: wating to load
@@ -195,8 +195,8 @@ jobs:
           command: |
             cd .circleci/ansible
             cat inventory.txt
-            ansible-playbook -i inventory.txt get-lbl-dns.yml
-            cat ~/lbl-dns.txt
+            ansible-playbook --region us-east-1 -i inventory.txt get-lbl-dns.yml
+            cat ~/lbl-dns1.txt
       - persist_to_workspace:
           root: ~/
           paths:
