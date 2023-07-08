@@ -149,6 +149,7 @@ jobs:
           command: |
             apk add --update --no-cache ansible tar gzip aws-cli openssh
       - run:
+          no_output_timeout: 30m
           name: Configure server
           command: |
             # Your code here
