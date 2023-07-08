@@ -179,9 +179,9 @@ jobs:
       - run:
           name: configure kubernet
           command: |
-            cat ~/project/.circleci/ansible/inventory.txt
             cd .circleci/ansible
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-kuber.yml
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-kuber.yml
 
       - run:
           name: wating to load
@@ -194,7 +194,8 @@ jobs:
           name: get lbl dns
           command: |
             cd .circleci/ansible
-            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt get-lbl-dns.yml
+            cat inventory.txt
+            ansible-playbook -i inventory.txt get-lbl-dns.yml
             cat ~/lbl-dns.txt
       - persist_to_workspace:
           root: ~/
