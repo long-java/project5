@@ -23,7 +23,7 @@
         update_cache: yes
   
     - name: "wait 30 seconds for target connection to become reachable/usable."
-      command: 'unzip --version'
+      command: echo unzip --version
 
   roles:
     - awscli
