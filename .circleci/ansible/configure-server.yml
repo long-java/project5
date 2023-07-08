@@ -13,14 +13,17 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    - name: "wait 30 seconds for target connection to become reachable/usable."
-      command: 'sleep 30'
+    - name: "wait 10 seconds for target connection to become reachable/usable."
+      command: 'sleep 10'
 
     - name: "install dependences"
       apt:
         name: [ "unzip" ]
         state: latest
         update_cache: yes
+  
+    - name: "wait 30 seconds for target connection to become reachable/usable."
+      command: 'unzip --version'
 
   roles:
     - awscli
