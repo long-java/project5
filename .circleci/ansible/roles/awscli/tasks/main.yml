@@ -1,17 +1,24 @@
 ---
 - name: "download"
-  shell: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip"
+  shell: |
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip"
+    ls
   args:
     chdir: $HOME
 
 
 - name: "unzip"
-  shell: unzip awscli.zip
+  shell: |
+    pwd
+    unzip awscli.zip
+    ls
   args:
     chdir: $HOME
 
 
 - name: "install"
-  shell: ./aws/install
+  shell: |
+    pwd
+    ./aws/install
   args:
     chdir: $HOME
