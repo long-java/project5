@@ -179,14 +179,14 @@ jobs:
       - run:
           name: configure kubernet
           command: |
-            cat ~/inventory.txt
+            cat ~/project/.circleci/ansible/inventory.txt
             cd ansible
-            ansible-playbook -i ~/inventory.txt configure-kuber.yml
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt configure-kuber.yml
 
       - run:
           name: wating to load
           command: |
-            cat ~/inventory.txt
+            cat ~/project/.circleci/ansible/inventory.txt
             echo "Waiting 60s !.."
             sleep 60
 
@@ -194,7 +194,7 @@ jobs:
           name: get lbl dns
           command: |
             cd ansible
-            ansible-playbook -i ~/inventory.txt get-lbl-dns.yml
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt get-lbl-dns.yml
             cat ~/lbl-dns.txt
       - persist_to_workspace:
           root: ~/
