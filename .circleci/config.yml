@@ -84,35 +84,35 @@ jobs:
           name: Install tar utility
           command: |
             yum install -y tar gzip
-      # - run:
-      #       name: stack network
-      #       command: |
-      #         echo ${ENVIRONMENT_NAME}
-      #         aws --region us-east-1 cloudformation deploy \
-      #           --template-file cloudformation/network.yml \
-      #           --tags project=${ENVIRONMENT_NAME}-prj5 \
-      #           --stack-name "${ENVIRONMENT_NAME}-network-prj5" \
-      #           --parameter-overrides file://cloudformation/network-parameters.json
+      - run:
+            name: stack network
+            command: |
+              echo ${ENVIRONMENT_NAME}
+              aws --region us-east-1 cloudformation deploy \
+                --template-file cloudformation/network.yml \
+                --tags project=${ENVIRONMENT_NAME}-prj5 \
+                --stack-name "${ENVIRONMENT_NAME}-network-prj5" \
+                --parameter-overrides file://cloudformation/network-parameters.json
 
-      # - run:
-      #     name: stack kubernet
-      #     no_output_timeout: 30m
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/kuber.yml \
-      #         --tags project=${ENVIRONMENT_NAME}-prj5 \
-      #         --stack-name "${ENVIRONMENT_NAME}-kuber-prj5" \
-      #         --parameter-overrides file://cloudformation/kuber-parameters.json \
-      #         --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: stack kubernet
+          no_output_timeout: 30m
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/kuber.yml \
+              --tags project=${ENVIRONMENT_NAME}-prj5 \
+              --stack-name "${ENVIRONMENT_NAME}-kuber-prj5" \
+              --parameter-overrides file://cloudformation/kuber-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
-      # - run:
-      #     name: stack server
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/server.yml \
-      #         --tags project=${ENVIRONMENT_NAME}-prj5 \
-      #         --stack-name "${ENVIRONMENT_NAME}-server-prj5" \
-      #         --parameter-overrides file://cloudformation/server-parameters.json
+      - run:
+          name: stack server
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/server.yml \
+              --tags project=${ENVIRONMENT_NAME}-prj5 \
+              --stack-name "${ENVIRONMENT_NAME}-server-prj5" \
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -196,11 +196,11 @@ jobs:
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt get-lbl-dns.yml
-            cat ~/lbl-dns1.txt
+            cat ~/lbl-dns2.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - lbl-dns1.txt
+            - lbl-dns2.txt
 
 
 workflows:

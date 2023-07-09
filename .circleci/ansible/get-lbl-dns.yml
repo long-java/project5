@@ -15,6 +15,6 @@
     - name: get LBL dns to txt
       copy:
         content: "{{ elb_dns.stdout }}"
-        dest: "~/lbl-dns1.txt"
+        dest: "~/lbl-dns2.txt"
       delegate_to: localhost
       delegate_facts: true
