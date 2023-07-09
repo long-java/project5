@@ -70,13 +70,13 @@ Resources:
     # NAT
     NatGateway1EIP:
         Type: AWS::EC2::EIP
-        DependsOn: InternetGatewayAttachment
+        DependsOn: VPCGatewayAttachment
         Properties: 
             Domain: vpc
 
     NatGateway2EIP:
         Type: AWS::EC2::EIP
-        DependsOn: InternetGatewayAttachment
+        DependsOn: VPCGatewayAttachment
         Properties:
             Domain: vpc
 
@@ -118,7 +118,7 @@ Resources:
 
     DefaultPublicRoute: 
         Type: AWS::EC2::Route
-        DependsOn: InternetGatewayAttachment
+        DependsOn: VPCGatewayAttachment
         Properties: 
             RouteTableId: !Ref PublicRouteTable
             DestinationCidrBlock: 0.0.0.0/0
