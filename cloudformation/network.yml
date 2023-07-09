@@ -146,9 +146,9 @@ Resources:
               FromPort: 80
               ToPort: 80
               CidrIp: 0.0.0.0/0
-        Tags: 
-            - Key: Name 
-              Value: !Sub ${EnvironmentName}-SecurityGroup
+            Tags: 
+                - Key: Name 
+                Value: !Sub ${EnvironmentName}-SecurityGroup
 
 
 Outputs: 
