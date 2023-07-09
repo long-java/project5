@@ -1,7 +1,7 @@
 ---
 - name: "download"
   shell: |
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip"
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     ls
   args:
     chdir: $HOME
@@ -10,7 +10,7 @@
 - name: "unzip"
   shell: |
     pwd
-    unzip awscli.zip
+    unzip awscliv2.zip
     ls
   args:
     chdir: $HOME

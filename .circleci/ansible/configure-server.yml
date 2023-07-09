@@ -23,7 +23,7 @@
         update_cache: yes
 
   roles:
-    # - awscli
+    - awscli
     - kubectl
 
 
