@@ -213,6 +213,27 @@ jobs:
           paths:
             - lbl-dns2.txt
 
+  deploy-docker:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["2c:84:c4:d2:e7:8e:df:a6:b5:5a:bc:aa:a1:bf:1d:5c"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible
+      - run:
+          name: deploy image docker
+          no_output_timeout: 30m
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-application.yml
+
 
 workflows:
   default:
@@ -231,5 +252,7 @@ workflows:
           requires: [deploy-infrastructure]
       - configure-cluster:
           requires: [configure-infrastructure]
+      - deploy-docker:
+          requires: [configure-cluster]
 
       # - configure-infrastructure
