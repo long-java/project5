@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prj5-deploy
+  name: prj5
   labels:
     app: prj5
 spec:
@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: prj5
-          image: shalltearbloodfallen01/prj5
+          image: shalltearbloodfallen01/prj5:master
           ports:
             - containerPort: 80
