@@ -10,8 +10,8 @@ Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub ${EnvironmentName}-instance-prj5
-      GroupDescription: Allow port 22 and port 3030.
+      GroupName: !Sub ${EnvironmentName}-InstanceSecurityGroup
+      GroupDescription: Allow port 22 and port 8080.
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22

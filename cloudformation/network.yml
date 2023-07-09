@@ -80,17 +80,31 @@ Resources:
         Properties:
             Domain: vpc
 
-    NatGateway1: 
+    NatGateway1:
+        DependsOn:
+            - NatGateway1EIP
+            - PublicSubnet1
+            - VPCGatewayAttachment
         Type: AWS::EC2::NatGateway
         Properties: 
             AllocationId: !GetAtt NatGateway1EIP.AllocationId
             SubnetId: !Ref PublicSubnet1
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${EnvironmentName}-NatGateway1
 
-    NatGateway2: 
+    NatGateway2:
+        DependsOn:
+            - NatGateway2EIP
+            - PublicSubnet2
+            - VPCGatewayAttachment
         Type: AWS::EC2::NatGateway
         Properties:
             AllocationId: !GetAtt NatGateway2EIP.AllocationId
             SubnetId: !Ref PublicSubnet2
+            Tags: 
+                - Key: Name 
+                  Value: !Sub ${EnvironmentName}-NatGateway2
 
 
     # RouteTable
@@ -100,7 +114,7 @@ Resources:
             VpcId: !Ref VPC
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${EnvironmentName} Public Routes
+                  Value: !Sub ${EnvironmentName}-PublicRouteTable
 
     DefaultPublicRoute: 
         Type: AWS::EC2::Route
@@ -122,7 +136,7 @@ Resources:
             RouteTableId: !Ref PublicRouteTable
             SubnetId: !Ref PublicSubnet2
 
-    SecurityGroup1:
+    SecurityGroup:
         Type: AWS::EC2::SecurityGroup
         Properties:
             GroupDescription: for kuber
@@ -132,6 +146,9 @@ Resources:
               FromPort: 80
               ToPort: 80
               CidrIp: 0.0.0.0/0
+        Tags: 
+            - Key: Name 
+                Value: !Sub ${EnvironmentName}-SecurityGroup
 
 
 Outputs: 
@@ -168,6 +185,6 @@ Outputs:
 
     SecurityGroup:
         Description: Security group for kuber
-        Value: !Ref SecurityGroup1
+        Value: !Ref SecurityGroup
         Export:
           Name: !Sub ${EnvironmentName}-SecurityGroupIds
