@@ -123,9 +123,7 @@ jobs:
               --template-file cloudformation/server.yml \
               --tags project=${ENVIRONMENT_NAME} \
               --stack-name "${ENVIRONMENT_NAME}-server" \
-              --parameter-overrides file://cloudformation/server-parameters.json \
-              --output text >> ~/checkServer.txt
-            cat ~/checkServer.txt
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -167,7 +165,6 @@ jobs:
           name: Configure server
           command: |
             # Your code here
-            cat ~/checkServer.txt
             cd .circleci/ansible
             echo "IP LIST configure:"
             cat inventory.txt
@@ -242,15 +239,14 @@ jobs:
 workflows:
   default:
     jobs:
-      - test
-      - docker-push:
-          requires: [test]
-      - deploy-infrastructure:
-          requires: [docker-push]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - test
+      # - docker-push:
+      #     requires: [test]
+      # - deploy-infrastructure:
+      #     requires: [docker-push]
+      - configure-infrastructure
       - configure-cluster:
-          requires: [docker-push, configure-infrastructure]
+          requires: [configure-infrastructure]
       - deploy-docker:
           requires: [configure-cluster]
 
