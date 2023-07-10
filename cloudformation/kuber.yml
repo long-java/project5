@@ -23,21 +23,6 @@ Resources:
             Action:
               - sts:AssumeRole
       Path: "/"
-      Policies: [
-        {
-            "PolicyName": "root",
-            "PolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": "*",
-                        "Resource": "*"
-                    }
-                ]
-            }
-        }
-      ]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
         - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
@@ -46,7 +31,8 @@ Resources:
   # Instance Profile
   RootInstanceProfile: 
     Type: "AWS::IAM::InstanceProfile"
-    Properties: 
+    Properties:
+      InstanceProfileName: !Sub ${EnvironmentName}-cluster-profile
       Path: "/"
       Roles: 
         - Ref: "EKSRoleCustom"

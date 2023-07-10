@@ -42,7 +42,7 @@ jobs:
   docker-push:
     docker:
       - image: python:3.7.3-stretch
-
+    working_directory: ~/repo
     steps:
       - checkout
       # Creates a remote Docker environment configured to execute Docker commands.
@@ -90,8 +90,8 @@ jobs:
               echo ${ENVIRONMENT_NAME}
               aws --region us-east-1 cloudformation deploy \
                 --template-file cloudformation/network.yml \
-                --tags project=${ENVIRONMENT_NAME}-prj5 \
-                --stack-name "${ENVIRONMENT_NAME}-network-prj5" \
+                --tags project=${ENVIRONMENT_NAME} \
+                --stack-name "${ENVIRONMENT_NAME}-network" \
                 --parameter-overrides file://cloudformation/network-parameters.json
 
       - run:
@@ -100,7 +100,7 @@ jobs:
           command: |
             aws --region us-east-1 cloudformation deploy \
               --template-file cloudformation/kuber.yml \
-              --tags project=${ENVIRONMENT_NAME}-prj5 \
+              --tags project=${ENVIRONMENT_NAME} \
               --stack-name "${ENVIRONMENT_NAME}-kuber-prj5" \
               --parameter-overrides file://cloudformation/kuber-parameters.json \
               --capabilities CAPABILITY_NAMED_IAM
@@ -121,9 +121,11 @@ jobs:
           command: |
             aws --region us-east-1 cloudformation deploy \
               --template-file cloudformation/server.yml \
-              --tags project=${ENVIRONMENT_NAME}-prj5 \
-              --stack-name "${ENVIRONMENT_NAME}-server-prj5" \
-              --parameter-overrides file://cloudformation/server-parameters.json
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-server" \
+              --parameter-overrides file://cloudformation/server-parameters.json \
+              --output text >> ~/checkServer.txt
+            cat ~/checkServer.txt
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -165,6 +167,7 @@ jobs:
           name: Configure server
           command: |
             # Your code here
+            cat ~/checkServer.txt
             cd .circleci/ansible
             echo "IP LIST configure:"
             cat inventory.txt
@@ -190,6 +193,7 @@ jobs:
       - run:
           name: configure kubernet
           command: |
+            cat ~/checkServer.txt
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-kuber.yml
@@ -198,8 +202,8 @@ jobs:
           name: wating to load
           command: |
             cat ~/project/.circleci/ansible/inventory.txt
-            echo "Waiting 30s !.."
-            sleep 30
+            echo "Waiting 60s !.."
+            sleep 60
 
       - run:
           name: get lbl dns

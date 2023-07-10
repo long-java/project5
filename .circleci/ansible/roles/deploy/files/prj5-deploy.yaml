@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: prj5-deploy
   labels:
-    app: prj5-deploy
+    app: prj5-app
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: prj5-deploy
+      app: prj5-app
   template:
     metadata:
       labels:
-        app: prj5-deploy
+        app: prj5-app
     spec:
       containers:
-        - name: prj5-deploy
-          image: shalltearbloodfallen01/prj5-deploy:master
+        - name: prj5-app
+          image: shalltearbloodfallen01/prj5-deploy
           ports:
             - containerPort: 80
