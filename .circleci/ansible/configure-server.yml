@@ -3,6 +3,7 @@
 - name: "configuration play." 
   hosts: web
   user: ubuntu
+  become_method: sudo
   become: yes
   gather_facts: false
 
