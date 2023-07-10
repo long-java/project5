@@ -77,11 +77,13 @@ Resources:
 
     PublicSubnet2: 
         Type: AWS::EC2::Subnet
+        Metadata:
+            Comment: PublicSubnet 2
         Properties:
             VpcId: !Ref VPC
             AvailabilityZone:
                 Fn::Select:
-                    - '0'
+                    - '1'
                     - Fn::GetAZs:
                         Ref: AWS::Region
             CidrBlock: !Ref PublicSubnet2CIDR
