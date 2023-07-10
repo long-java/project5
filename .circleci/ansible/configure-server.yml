@@ -7,9 +7,6 @@
   gather_facts: false
 
   pre_tasks:
-    - name: "wait 10 seconds for target connection to become reachable/usable."
-      command: 'sleep 10'
-
     - name: "install dependences"
       apt:
         name: [ "unzip" ]
