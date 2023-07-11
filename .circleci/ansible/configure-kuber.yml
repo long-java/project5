@@ -5,5 +5,7 @@
   gather_facts: false
   become: yes
   roles:
+    - awscli
+    - kubectl
     - deploy
     - service
