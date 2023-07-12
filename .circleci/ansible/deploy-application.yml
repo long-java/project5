@@ -9,12 +9,7 @@
       args:
         chdir: $HOME
 
-    - name: check
-      shell: "./bin/kubectl rollout history deployments/prj5-deploy"
-      args:
-        chdir: $HOME
-
     - name: if successful
-      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=60s"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=600s"
       args:
         chdir: $HOME
