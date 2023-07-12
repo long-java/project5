@@ -10,6 +10,6 @@
         chdir: $HOME
 
     - name: if successful
-      shell: "./bin/kubectl rollout status deployments/prj5-deploy:master"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy"
       args:
         chdir: $HOME
