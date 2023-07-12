@@ -228,7 +228,7 @@ jobs:
             apk add --update ansible
       - run:
           name: deploy image docker
-          no_output_timeout: 30m
+          no_output_timeout: 40m
           command: |
             cd .circleci/ansible
             cat inventory.txt
