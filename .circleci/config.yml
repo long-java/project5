@@ -84,46 +84,46 @@ jobs:
           name: Install tar utility
           command: |
             yum install -y tar gzip
-      # - run:
-      #       name: stack network
-      #       command: |
-      #         echo ${ENVIRONMENT_NAME}
-      #         aws --region us-east-1 cloudformation deploy \
-      #           --template-file cloudformation/network.yml \
-      #           --tags project=${ENVIRONMENT_NAME} \
-      #           --stack-name "${ENVIRONMENT_NAME}-network" \
-      #           --parameter-overrides file://cloudformation/network-parameters.json
+      - run:
+            name: stack network
+            command: |
+              echo ${ENVIRONMENT_NAME}
+              aws --region us-east-1 cloudformation deploy \
+                --template-file cloudformation/network.yml \
+                --tags project=${ENVIRONMENT_NAME} \
+                --stack-name "${ENVIRONMENT_NAME}-network" \
+                --parameter-overrides file://cloudformation/network-parameters.json
 
-      # - run:
-      #     name: stack kubernet
-      #     no_output_timeout: 30m
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/kuber.yml \
-      #         --tags project=${ENVIRONMENT_NAME} \
-      #         --stack-name "${ENVIRONMENT_NAME}-kuber" \
-      #         --parameter-overrides file://cloudformation/kuber-parameters.json \
-      #         --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: stack kubernet
+          no_output_timeout: 30m
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/kuber.yml \
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-kuber" \
+              --parameter-overrides file://cloudformation/kuber-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
-      # - run:
-      #     name: stack node-group
-      #     no_output_timeout: 30m
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/node.yml \
-      #         --tags project=${ENVIRONMENT_NAME}-node \
-      #         --stack-name "${ENVIRONMENT_NAME}-node" \
-      #         --parameter-overrides file://cloudformation/node-parameters.json \
-      #         --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: stack node-group
+          no_output_timeout: 30m
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/node.yml \
+              --tags project=${ENVIRONMENT_NAME}-node \
+              --stack-name "${ENVIRONMENT_NAME}-node" \
+              --parameter-overrides file://cloudformation/node-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
-      # - run:
-      #     name: stack server
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/server.yml \
-      #         --tags project=${ENVIRONMENT_NAME} \
-      #         --stack-name "${ENVIRONMENT_NAME}-server" \
-      #         --parameter-overrides file://cloudformation/server-parameters.json
+      - run:
+          name: stack server
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/server.yml \
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-server" \
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -238,26 +238,32 @@ jobs:
 workflows:
   default:
     jobs:
-      # - test
-      # - docker-push:
-      #     requires: [test]
-      # - deploy-infrastructure:
-      #     requires: [docker-push]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - configure-cluster:
-      #     requires: [docker-push, configure-infrastructure]
-      # - deploy-docker:
-      #     requires: [configure-cluster]
-
-
-      - deploy-infrastructure
+      - test
+      - docker-push:
+          requires: [test]
+          filters:
+            branches: 
+              only: [ main ]
+      - deploy-infrastructure:
+          requires: [docker-push]
+          filters:
+            branches:
+              only: [ main ]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - configure-cluster:
-          requires: [configure-infrastructure]
+          requires: [docker-push, configure-infrastructure]
       - deploy-docker:
           requires: [configure-cluster]
+
+
+      # - deploy-infrastructure
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - configure-cluster:
+      #     requires: [configure-infrastructure]
+      # - deploy-docker:
+      #     requires: [configure-cluster]
 
 
       # - deploy-infrastructure
