@@ -25,6 +25,6 @@
         chdir: $HOME      
 
     - name: if successful
-      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=60s"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=2700s"
       args:
         chdir: $HOME
