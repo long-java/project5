@@ -11,7 +11,7 @@
 
     - name: if successful
       shell: |
-        kubectl get deployment -w
+        "./bin/kubectl get deployment -w"
         "./bin/kubectl rollout status deployments/prj5-deploy --timeout=3600s"
       args:
         chdir: $HOME
