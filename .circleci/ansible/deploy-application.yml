@@ -5,7 +5,7 @@
   become: yes
   tasks:
     - name: build
-      shell: "./bin/kubectl set image deployment/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:master"
+      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:master"
       args:
         chdir: $HOME
 
@@ -20,6 +20,6 @@
         chdir: $HOME      
 
     - name: if successful
-      shell: "./bin/kubectl rollout status deployment/prj5-deploy --timeout=3600s"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=2700s"
       args:
         chdir: $HOME
