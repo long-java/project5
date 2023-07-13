@@ -9,6 +9,11 @@
       args:
         chdir: $HOME
 
+    - name: get namspace
+      shell: "./bin/kubectl get events --all-namespaces"
+      args:
+        chdir: $HOME
+
     - name: describe
       shell: "./bin/kubectl get deployment"
       args:
@@ -20,6 +25,6 @@
         chdir: $HOME      
 
     - name: if successful
-      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=2700s"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=60s"
       args:
         chdir: $HOME
