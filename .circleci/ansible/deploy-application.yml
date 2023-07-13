@@ -10,8 +10,7 @@
         chdir: $HOME
 
     - name: describe
-      shell: |
-        "./bin/kubectl get deployments"
+      shell: kubectl get deployments
       args:
         chdir: $HOME    
 
