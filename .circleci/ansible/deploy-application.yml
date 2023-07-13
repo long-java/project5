@@ -5,13 +5,18 @@
   become: yes
   tasks:
     - name: build
-      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:master"
+      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-deploy=shalltearbloodfallen01/prj5-deploy:master"
+      args:
+        chdir: $HOME
+
+    - name: describe
+      shell: |
+        "./bin/kubectl describe service prj5-deploy"
       args:
         chdir: $HOME
 
     - name: if successful
       shell: |
-        "./bin/kubectl get deployment -w"
-        "./bin/kubectl rollout status deployments/prj5-deploy --timeout=3600s"
+        "./bin/kubectl rollout status deployments/prj5-deploy --timeout=100s"
       args:
         chdir: $HOME
