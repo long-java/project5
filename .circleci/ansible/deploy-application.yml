@@ -11,7 +11,7 @@
 
     - name: describe
       shell: |
-        "./bin/kubectl describe service prj5-app"
+        "./bin/kubectl describe service prj5-deploy"
       args:
         chdir: $HOME
 
