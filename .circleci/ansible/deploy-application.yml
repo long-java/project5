@@ -3,9 +3,11 @@
   user: ubuntu
   gather_facts: false
   become: yes
+    vars:
+    CIRCLE_WORKFLOW_ID: "{{ lookup('env', 'CIRCLE_WORKFLOW_ID') }}"
   tasks:
     - name: build
-      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy"
+      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:{{ CIRCLE_WORKFLOW_ID }}"
       args:
         chdir: $HOME
 
