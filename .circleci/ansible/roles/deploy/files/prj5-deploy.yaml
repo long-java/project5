@@ -10,11 +10,6 @@ spec:
   selector:
     matchLabels:
       app: prj5-app
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-        maxSurge: 0
-        maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -24,19 +19,5 @@ spec:
       containers:
         - name: prj5-app
           image: shalltearbloodfallen01/prj5-deploy
-          readinessProbe:
-            httpGet:
-              path: /ready
-              port: 80
-            successThreshold: 3
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-              httpHeaders:
-              - name: Custom-Header
-                value: Awesome
-            initialDelaySeconds: 3
-            periodSeconds: 3
           ports:
             - containerPort: 80
