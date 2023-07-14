@@ -29,5 +29,12 @@ spec:
               path: /ready
               port: 80
             successThreshold: 3
+          livenessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp/healthy
+            initialDelaySeconds: 5
+            periodSeconds: 5
           # ports:
           #   - containerPort: 80
