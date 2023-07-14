@@ -30,11 +30,13 @@ spec:
               port: 80
             successThreshold: 3
           livenessProbe:
-            exec:
-              command:
-              - cat
-              - /tmp/healthy
-            initialDelaySeconds: 5
-            periodSeconds: 5
-          # ports:
-          #   - containerPort: 80
+            httpGet:
+              path: /healthz
+              port: 8080
+              httpHeaders:
+              - name: Custom-Header
+                value: Awesome
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          ports:
+            - containerPort: 80
