@@ -19,9 +19,15 @@ spec:
     metadata:
       labels:
         app: prj5-app
+      
     spec:
       containers:
         - name: prj5-app
           image: shalltearbloodfallen01/prj5-deploy
-          ports:
-            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80
+            successThreshold: 3
+          # ports:
+          #   - containerPort: 80
