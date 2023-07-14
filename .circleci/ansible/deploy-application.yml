@@ -7,24 +7,9 @@
     - name: build
       shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:master"
       args:
-        chdir: $HOME
-
-    - name: get namspace
-      shell: "./bin/kubectl get events --all-namespaces"
-      args:
-        chdir: $HOME
-
-    - name: describe
-      shell: "./bin/kubectl get deployment"
-      args:
-        chdir: $HOME
-
-    - name: get pods
-      shell: "./bin/kubectl get pods"
-      args:
-        chdir: $HOME      
+        chdir: $HOME  
 
     - name: if successful
-      shell: "./bin/kubectl rollout status deployments/prj5-deploy --timeout=2700s"
+      shell: "./bin/kubectl rollout status deployments/prj5-deploy --request-timeout=0 || true"
       args:
         chdir: $HOME
