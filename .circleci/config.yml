@@ -259,10 +259,10 @@ workflows:
 
 
       - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
       - configure-cluster:
-          requires: [configure-infrastructure]
+          requires: [deploy-infrastructure]
       - deploy-docker:
           requires: [configure-cluster]
 
