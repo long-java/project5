@@ -88,7 +88,7 @@ jobs:
       - run:
             name: stack network
             command: |
-              cat ~/project/.circleci/ansible/inventory.txt
+              cat ~/inventory.txt
               echo ${ENVIRONMENT_NAME}
               aws --region us-east-1 cloudformation deploy \
                 --template-file cloudformation/network.yml \
@@ -133,14 +133,14 @@ jobs:
             aws --region us-east-1 ec2 describe-instances \
               --query "Reservations[*].Instances[*].[PublicIpAddress]" \
               --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-management*" \
-              --output text >> ~/project/.circleci/ansible/inventory.txt
+              --output text >> ~/inventory.txt
 
             echo "IP LIST: "
-            cat ~/project/.circleci/ansible/inventory.txt
+            cat ~/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - inventory.txt
 
 
   configure-infrastructure:
