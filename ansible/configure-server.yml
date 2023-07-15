@@ -5,7 +5,7 @@
   gather_facts: false
   become: yes
   pre_tasks:
-    - name: "Install 'unzip'"
+    - name: "Install unzip"
       apt:
         name: [ "unzip" ]
         state: latest
@@ -16,7 +16,7 @@
     - install-kubectl
 
 
-- name: "Authenticate AWS CLI with AWS"
+- name: "authen to awscli"
   hosts: management
   user: ubuntu
   gather_facts: false
@@ -35,7 +35,7 @@
     - name: Set the aws_session_token
       shell: "aws configure set aws_session_token {{ AWS_SESSION_TOKEN }}"
 
-- name: "Fetch kubectl config"
+- name: "kubectl config"
   hosts: management
   user: ubuntu
   gather_facts: false
