@@ -1,9 +1,9 @@
-- name: configure service
+- name: configure
   copy:
-    src: "prj5-service.yaml"
+    src: "{{ ENVIRONMENT_NAME }}-service.yaml"
     dest: $HOME
 
-- name: configure service
-  command: "./bin/kubectl apply -f prj5-service.yaml"
+- name: Create service configuration
+  command: "./bin/kubectl apply -f {{ ENVIRONMENT_NAME }}-service.yaml"
   args:
     chdir: $HOME

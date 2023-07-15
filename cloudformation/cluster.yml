@@ -52,3 +52,16 @@ Resources:
             - ","
             - Fn::ImportValue:
                 Fn::Sub: ${EnvironmentName}-PUB-NETS
+
+Outputs:
+  EksId:
+    Description: EKS id
+    Value: !Ref CapstoneProjectCluster
+    Export:
+      Name: !Sub ${EnvironmentName}-EKSCluster
+
+  EKSRoleArn:
+    Description: Role for accessing and creating aws resources
+    Value: !GetAtt EKSRoleCustom.Arn
+    Export:
+      Name: !Sub ${EnvironmentName}-EKSRole

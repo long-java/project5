@@ -1,11 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prj5-deploy
+  name: prj5-deployment
   labels:
     app: prj5-app
 spec:
-  paused: false
   replicas: 4
   selector:
     matchLabels:
@@ -14,10 +13,10 @@ spec:
     metadata:
       labels:
         app: prj5-app
-      
+        
     spec:
       containers:
         - name: prj5-app
-          image: shalltearbloodfallen01/prj5-deploy
+          image: shalltearbloodfallen01/prj5
           ports:
             - containerPort: 80
