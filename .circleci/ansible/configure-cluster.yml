@@ -1,9 +1,0 @@
----
-- name: "configure kubernet"
-  hosts: web[0]
-  user: ubuntu
-  gather_facts: false
-  become: yes
-  roles:
-    - deploy
-    - service

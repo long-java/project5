@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: prj5-deployment
   labels:
     app: prj5-app
+
 spec:
   replicas: 4
   selector:
     matchLabels:
       app: prj5-app
+
   template:
     metadata:
       labels:
         app: prj5-app
-        
     spec:
       containers:
         - name: prj5-app

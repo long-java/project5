@@ -4,21 +4,23 @@ Parameters:
 
   EnvironmentName:
     Description: An environment name that will be prefixed to resource names
+    Default: prj5
     Type: String
 
 Resources:
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub ${EnvironmentName}-InstanceSecurityGroup
-      GroupDescription: Allow port 22 and port 8080.
+      GroupName: !Sub ${EnvironmentName}-management-SG
+      GroupDescription: Allow port 22
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
 
-  instance1:
+  managementHost1:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
@@ -28,11 +30,11 @@ Resources:
       ImageId: ami-095577d5f61619e4b
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName}-instance1
+          Value: !Sub ${EnvironmentName}-management1
         - Key: Project
           Value: !Ref EnvironmentName
 
-  instance2:
+  managementHost2:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
@@ -42,6 +44,6 @@ Resources:
       ImageId: ami-095577d5f61619e4b
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName}-instance2
+          Value: !Sub ${EnvironmentName}-management2
         - Key: Project
           Value: !Ref EnvironmentName

@@ -1,18 +1,24 @@
 Description: >
-    Carlos Rivas / Udacity 2019
+  Creates an Amazon EKS Cluster - Long
 Parameters:
-
   EnvironmentName:
-    Description: An environment name that will be prefixed to resource names
+    Description: An Environment name that will be prefixed to resources
+    Default: prj5
     Type: String
 
 Resources:
+  ClusterInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub ${EnvironmentName}-cluster-profile
+      Path: "/"
+      Roles:
+        - !Ref EKSClusterRole
 
-  # create role for cluster
-  EKSRoleCustom:
+  EKSClusterRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub ${EnvironmentName}-roles
+      RoleName: !Sub ${EnvironmentName}-cluster-role
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -24,35 +30,23 @@ Resources:
               - sts:AssumeRole
       Path: "/"
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
         - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
         - arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
 
-  # Instance Profile
-  RootInstanceProfile: 
-    Type: "AWS::IAM::InstanceProfile"
-    Properties:
-      InstanceProfileName: !Sub ${EnvironmentName}-cluster-profile
-      Path: "/"
-      Roles: 
-        - Ref: "EKSRoleCustom"
-
-
-  # create cluster
   CapstoneProjectCluster:
     Type: AWS::EKS::Cluster
     Properties:
       Name: !Sub ${EnvironmentName}-cluster
-      RoleArn: !GetAtt EKSRoleCustom.Arn
+      RoleArn: !GetAtt EKSClusterRole.Arn
       ResourcesVpcConfig:
         SecurityGroupIds:
-          - Fn::ImportValue: !Sub ${EnvironmentName}-SecurityGroupIds
+          - Fn::ImportValue: !Sub ${EnvironmentName}-SCG
         SubnetIds:
           Fn::Split:
             - ","
             - Fn::ImportValue:
                 Fn::Sub: ${EnvironmentName}-PUB-NETS
-
 Outputs:
   EksId:
     Description: EKS id
@@ -62,6 +56,6 @@ Outputs:
 
   EKSRoleArn:
     Description: Role for accessing and creating aws resources
-    Value: !GetAtt EKSRoleCustom.Arn
+    Value: !GetAtt EKSClusterRole.Arn
     Export:
       Name: !Sub ${EnvironmentName}-EKSRole

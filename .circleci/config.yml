@@ -69,8 +69,8 @@ jobs:
           name: push to Docker Hub
           command: |
             docker login -u "shalltearbloodfallen01" -p "Long3900@"
-            docker tag prj5-deploy shalltearbloodfallen01/prj5-deploy:$CIRCLE_WORKFLOW_ID
-            docker push shalltearbloodfallen01/prj5-deploy:$CIRCLE_WORKFLOW_ID
+            docker tag prj5 shalltearbloodfallen01/prj5:$CIRCLE_WORKFLOW_ID
+            docker push shalltearbloodfallen01/prj5:$CIRCLE_WORKFLOW_ID
 
 
   deploy-infrastructure:
@@ -85,53 +85,54 @@ jobs:
           name: Install tar utility
           command: |
             yum install -y tar gzip
-      # - run:
-      #       name: stack network
-      #       command: |
-      #         echo ${ENVIRONMENT_NAME}
-      #         aws --region us-east-1 cloudformation deploy \
-      #           --template-file cloudformation/network.yml \
-      #           --tags project=${ENVIRONMENT_NAME} \
-      #           --stack-name "${ENVIRONMENT_NAME}-network" \
-      #           --parameter-overrides file://cloudformation/network-parameters.json
+      - run:
+            name: stack network
+            command: |
+              cat ~/project/.circleci/ansible/inventory.txt
+              echo ${ENVIRONMENT_NAME}
+              aws --region us-east-1 cloudformation deploy \
+                --template-file cloudformation/network.yml \
+                --tags project=${ENVIRONMENT_NAME} \
+                --stack-name "${ENVIRONMENT_NAME}-network" \
+                --parameter-overrides file://cloudformation/network-parameters.json
 
-      # - run:
-      #     name: stack kubernet
-      #     no_output_timeout: 30m
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/cluster.yml \
-      #         --tags project=${ENVIRONMENT_NAME} \
-      #         --stack-name "${ENVIRONMENT_NAME}-cluster" \
-      #         --parameter-overrides file://cloudformation/cluster-parameters.json \
-      #         --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: stack kubernet
+          no_output_timeout: 30m
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/cluster.yml \
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-cluster" \
+              --parameter-overrides file://cloudformation/cluster-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
-      # - run:
-      #     name: stack node-group
-      #     no_output_timeout: 30m
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/nodegroup.yml \
-      #         --tags project=${ENVIRONMENT_NAME} \
-      #         --stack-name "${ENVIRONMENT_NAME}-nodegroup" \
-      #         --parameter-overrides file://cloudformation/nodegroup-parameters.json \
-      #         --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: stack node-group
+          no_output_timeout: 30m
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/nodegroup.yml \
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-nodegroup" \
+              --parameter-overrides file://cloudformation/nodegroup-parameters.json \
+              --capabilities CAPABILITY_NAMED_IAM
 
-      # - run:
-      #     name: stack server
-      #     command: |
-      #       aws --region us-east-1 cloudformation deploy \
-      #         --template-file cloudformation/server.yml \
-      #         --tags project=${ENVIRONMENT_NAME} \
-      #         --stack-name "${ENVIRONMENT_NAME}-server" \
-      #         --parameter-overrides file://cloudformation/server-parameters.json
+      - run:
+          name: stack server
+          command: |
+            aws --region us-east-1 cloudformation deploy \
+              --template-file cloudformation/server.yml \
+              --tags project=${ENVIRONMENT_NAME} \
+              --stack-name "${ENVIRONMENT_NAME}-server" \
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             aws --region us-east-1 ec2 describe-instances \
               --query "Reservations[*].Instances[*].[PublicIpAddress]" \
-              --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-instance*" \
+              --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-management*" \
               --output text >> ~/project/.circleci/ansible/inventory.txt
 
             echo "IP LIST: "
@@ -166,10 +167,10 @@ jobs:
           name: Configure server
           command: |
             # Your code here
-            cd .circleci/ansible
+            cd ansible
             echo "IP LIST configure:"
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
+            cat ~/inventory.txt
+            ansible-playbook -i ~/inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
       # - destroy-environment
 
@@ -191,23 +192,23 @@ jobs:
       - run:
           name: configure kubernet
           command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-kuber.yml
+            cd ansible
+            cat ~/inventory.txt
+            ansible-playbook -i ~/inventory.txt configure-kuber.yml
 
       - run:
           name: wating to load
           command: |
-            cat ~/project/.circleci/ansible/inventory.txt
-            # echo "Waiting 60s !.."
-            # sleep 60
+            cat ~/inventory.txt
+            echo "Waiting 60s !.."
+            sleep 60
 
       - run:
           name: get lbl dns
           command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt get-lbl-dns.yml
+            cd ansible
+            cat ~/inventory.txt
+            ansible-playbook -i ~/inventory.txt get-lbl-dns.yml
             cat ~/lbl-dns2.txt
       - persist_to_workspace:
           root: ~/
@@ -231,39 +232,39 @@ jobs:
           name: deploy image docker
           no_output_timeout: 40m
           command: |
-            cd .circleci/ansible
-            cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-application.yml
+            cd ansible
+            cat ~/inventory.txt
+            ansible-playbook -i ~/inventory.txt deploy-application.yml
 
 
 workflows:
   default:
     jobs:
-      # - test
-      # - docker-push:
-      #     requires: [test]
-      #     filters:
-      #       branches: 
-      #         only: [ main ]
-      # - deploy-infrastructure:
-      #     filters:
-      #       branches:
-      #         only: [ main ]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - configure-cluster:
-      #     requires: [docker-push, configure-infrastructure]
-      # - deploy-docker:
-      #     requires: [configure-cluster]
-
-
-      - deploy-infrastructure
+      - test
+      - docker-push:
+          requires: [test]
+          filters:
+            branches: 
+              only: [ main ]
+      - deploy-infrastructure:
+          filters:
+            branches:
+              only: [ main ]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
       - configure-cluster:
-          requires: [configure-infrastructure]
+          requires: [docker-push, configure-infrastructure]
       - deploy-docker:
           requires: [configure-cluster]
+
+
+      # - deploy-infrastructure
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - configure-cluster:
+      #     requires: [configure-infrastructure]
+      # - deploy-docker:
+      #     requires: [configure-cluster]
 
 
       # - deploy-infrastructure
