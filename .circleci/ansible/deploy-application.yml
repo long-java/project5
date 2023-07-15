@@ -7,11 +7,11 @@
     CIRCLE_WORKFLOW_ID: "{{ lookup('env', 'CIRCLE_WORKFLOW_ID') }}"
   tasks:
     - name: build
-      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:{{ CIRCLE_WORKFLOW_ID }}"
+      shell: "./bin/kubectl set image deployments/prj5-deploy prj5-app=shalltearbloodfallen01/prj5-deploy:1bb821aa-1794-4b14-9528-9ddfc1f3e02a"
       args:
         chdir: $HOME
 
-    - name: get pods
+    - name: get events
       shell: "./bin/kubectl -n prj5-deploy get events --sort-by='{.lastTimestamp}'"
       args:
         chdir: $HOME      
