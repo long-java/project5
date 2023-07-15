@@ -88,7 +88,6 @@ jobs:
       - run:
             name: stack network
             command: |
-              cat ~/inventory.txt
               echo ${ENVIRONMENT_NAME}
               aws --region us-east-1 cloudformation deploy \
                 --template-file cloudformation/network.yml \
@@ -130,6 +129,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            echo [management] > ~/inventory.txt
             aws --region us-east-1 ec2 describe-instances \
               --query "Reservations[*].Instances[*].[PublicIpAddress]" \
               --filters "Name=tag:Name,Values=${ENVIRONMENT_NAME}-management*" \
