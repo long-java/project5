@@ -124,7 +124,9 @@ jobs:
               --template-file cloudformation/server.yml \
               --tags project=${ENVIRONMENT_NAME} \
               --stack-name "${ENVIRONMENT_NAME}-server" \
-              --parameter-overrides file://cloudformation/server-parameters.json
+              --parameter-overrides file://cloudformation/server-parameters.json \
+              --output text >> ~/checkSuccess.txt
+            cat ~/checkSuccess.txt
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -141,6 +143,7 @@ jobs:
           root: ~/
           paths:
             - inventory.txt
+            - checkSuccess.txt
 
 
   configure-infrastructure:
@@ -165,12 +168,30 @@ jobs:
       - run:
           no_output_timeout: 60m
           name: Configure server
+          # command: |
+          #   # Your code here
+          #   cd ansible
+          #   echo "IP LIST configure:"
+          #   cat ~/inventory.txt
+          #   ansible-playbook -i ~/inventory.txt configure-server.yml
+
+
           command: |
-            # Your code here
-            cd ansible
-            echo "IP LIST configure:"
-            cat ~/inventory.txt
-            ansible-playbook -i ~/inventory.txt configure-server.yml
+            if grep -q "No changes to deploy" ~/checkSuccess.txt
+              then
+                echo "IP LIST configure:"
+                cat ~/inventory.txt
+                echo "Our management instances are already configured."
+                cat ~/inventory.txt
+                cd ansible
+                ansible-playbook -i ~/inventory.txt configure-server.yml
+              else
+                echo "IP LIST configure:"
+                cat ~/inventory.txt
+                cd ansible
+                ansible-playbook -i ~/inventory.txt configure-server.yml
+              fi
+
       # Here's where you will add some code to rollback on failure
       # - destroy-environment
 
