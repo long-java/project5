@@ -11,6 +11,11 @@
       args:
         chdir: $HOME
 
+    - name: get pods
+      shell: "./bin/kubectl -n prj5-deploy get events --sort-by='{.lastTimestamp}'"
+      args:
+        chdir: $HOME      
+
     # - name: get namspace
     #   shell: "./bin/kubectl get events --all-namespaces"
     #   args:
