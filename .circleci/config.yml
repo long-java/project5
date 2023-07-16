@@ -179,9 +179,7 @@ jobs:
           command: |
             if grep -q "No changes to deploy" ~/checkSuccess.txt
               then
-                echo "IP LIST configure:"
-                cat ~/inventory.txt
-                echo "Our management instances are already configured."
+                echo "IP LIST configure No changes to deploy:"
                 cat ~/inventory.txt
                 cd ansible
                 ansible-playbook -i ~/inventory.txt configure-server.yml
