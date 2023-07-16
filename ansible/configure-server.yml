@@ -7,7 +7,7 @@
   pre_tasks:
     - name: "Install unzip"
       apt:
-        name: [ "unzip", "openssh-server" ]
+        name: [ "unzip" ]
         state: latest
         update_cache: yes
 
