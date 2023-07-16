@@ -7,14 +7,14 @@
   pre_tasks:
     - name: "Install unzip"
       apt:
-        name: [ "unzip" ]
+        name: [ "unzip", "openssh-server" ]
         state: latest
         update_cache: yes
 
-    - name: "openssh"
-      apt:
-        name: [ "openssh-server"]
-        update_cache: yes
+    # - name: "openssh"
+    #   apt:
+    #     name: [ "openssh-server" ]
+    #     update_cache: yes
 
 
   roles:
