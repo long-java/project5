@@ -4,22 +4,22 @@
   user: ubuntu
   gather_facts: false
   become: yes
-  pre_tasks:
-    - name: "Install unzip"
-      apt:
-        name: [ "unzip" ]
-        state: latest
-        update_cache: yes
+  # pre_tasks:
+  #   - name: "Install unzip"
+  #     apt:
+  #       name: [ "unzip" ]
+  #       state: latest
+  #       update_cache: yes
 
-    # - name: "openssh"
-    #   apt:
-    #     name: [ "openssh-server" ]
-    #     update_cache: yes
+  #   # - name: "openssh"
+  #   #   apt:
+  #   #     name: [ "openssh-server" ]
+  #   #     update_cache: yes
 
 
-  roles:
-    - install-awscli
-    - install-kubectl
+  # roles:
+  #   - install-awscli
+  #   - install-kubectl
 
 
 - name: "authen to awscli"
