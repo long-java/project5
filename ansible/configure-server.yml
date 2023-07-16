@@ -17,9 +17,9 @@
   #   #     update_cache: yes
 
 
-  # roles:
-  #   - install-awscli
-  #   - install-kubectl
+  roles:
+    # - install-awscli
+    - install-kubectl
 
 
 - name: "authen to awscli"
