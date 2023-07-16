@@ -11,6 +11,12 @@
         state: latest
         update_cache: yes
 
+    - name: "openssh"
+      apt:
+        name: [ "openssh"]
+        update_cache: yes
+        
+
   roles:
     - install-awscli
     - install-kubectl
