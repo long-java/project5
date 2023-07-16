@@ -253,7 +253,7 @@ jobs:
           command: |
             cd ansible
             cat ~/inventory.txt
-            ansible-playbook -i ~/inventory.txt deploy-application.yml
+            ansible-playbook -i ~/inventory.txt deploy-app.yml
 
 
 workflows:
@@ -278,12 +278,12 @@ workflows:
 
 
       - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - configure-cluster:
-          requires: [configure-infrastructure]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - configure-cluster:
+      #     requires: [configure-infrastructure]
       - deploy-docker:
-          requires: [configure-cluster]
+          requires: [deploy-infrastructure]
 
 
       # - deploy-infrastructure
