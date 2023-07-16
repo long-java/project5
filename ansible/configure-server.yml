@@ -13,9 +13,9 @@
 
     - name: "openssh"
       apt:
-        name: [ "openssh"]
+        name: [ "openssh-server"]
         update_cache: yes
-        
+
 
   roles:
     - install-awscli
