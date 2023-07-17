@@ -66,9 +66,9 @@ jobs:
             docker image ls
 
       - run:
-          name: push to Docker Hub
+          name: push repo to hub
           command: |
-            docker login -u "shalltearbloodfallen01" -p "Long3900@"
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
             docker tag prj5 shalltearbloodfallen01/prj5:$CIRCLE_WORKFLOW_ID
             docker push shalltearbloodfallen01/prj5:$CIRCLE_WORKFLOW_ID
 
@@ -124,9 +124,7 @@ jobs:
               --template-file cloudformation/server.yml \
               --tags project=${ENVIRONMENT_NAME} \
               --stack-name "${ENVIRONMENT_NAME}-server" \
-              --parameter-overrides file://cloudformation/server-parameters.json \
-              --output text >> ~/checkSuccess.txt
-            cat ~/checkSuccess.txt
+              --parameter-overrides file://cloudformation/server-parameters.json
 
       - run:
           name: Add back-end ip to ansible inventory
@@ -143,7 +141,6 @@ jobs:
           root: ~/
           paths:
             - inventory.txt
-            - checkSuccess.txt
 
 
   configure-infrastructure:
@@ -177,18 +174,11 @@ jobs:
 
 
           command: |
-            if grep -q "No changes to deploy" ~/checkSuccess.txt
-              then
-                echo "IP LIST configure No changes to deploy:"
-                cat ~/inventory.txt
-                cd ansible
-                ansible-playbook -i ~/inventory.txt configure-server.yml
-              else
-                echo "IP LIST configure:"
-                cat ~/inventory.txt
-                cd ansible
-                ansible-playbook -i ~/inventory.txt configure-server.yml
-              fi
+            echo "IP LIST configure No changes to deploy:"
+            cat ~/inventory.txt
+            cd ansible
+            ansible-playbook -i ~/inventory.txt configure-server.yml
+
 
       # Here's where you will add some code to rollback on failure
       # - destroy-environment

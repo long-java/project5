@@ -1,0 +1,20 @@
+[management]
+52.205.250.241
+34.207.88.138
+
+PLAY [configure eks] ***********************************************************
+
+TASK [capstone-deployment : configuration] *************************************
+changed: [52.205.250.241]
+
+TASK [capstone-deployment : apply deployment] **********************************
+changed: [52.205.250.241]
+
+TASK [capstone-service : configuration] ****************************************
+changed: [52.205.250.241]
+
+TASK [capstone-service : create service] ***************************************
+changed: [52.205.250.241]
+
+PLAY RECAP *********************************************************************
+52.205.250.241             : ok=4    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  

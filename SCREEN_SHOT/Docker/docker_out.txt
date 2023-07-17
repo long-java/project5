@@ -1,0 +1,20 @@
+Login Succeeded
+The push refers to repository [docker.io/shalltearbloodfallen01/****]
+
+152a67f2: Preparing 
+3ef4d283: Preparing 
+9db079cb: Preparing 
+7872c8c7: Preparing 
+50468940: Preparing 
+08035aef: Preparing 
+02680a15: Preparing 
+c551a0da: Preparing 
+31157b81: Preparing 
+d801397d: Preparing 
+68cde90b: Preparing 
+455106c2-e1e6-4026-ab9e-3e1fc69fc8a7: digest: sha256:ae37ed530b9169df42fa4b0235962aae31e95b1a64ff4b56b50e2401686d1561 size: 2847
+CircleCI received exit code 0
+
+
+
+
