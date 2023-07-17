@@ -1,6 +1,6 @@
 # project5
 * My Status Badges:
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/long-java/project5/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/long-java/project5/tree/main)
+https://dl.circleci.com/status-badge/redirect/gh/long-java/project5/tree/main
 
 
 Project 5 Cloud Devops Engineer - Pham Tien Long
