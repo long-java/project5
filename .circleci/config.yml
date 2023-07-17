@@ -250,21 +250,21 @@ workflows:
   default:
     jobs:
       - test
-      - docker-push:
-          requires: [test]
-          filters:
-            branches: 
-              only: [ main ]
-      - deploy-infrastructure:
-          filters:
-            branches:
-              only: [ main ]
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - configure-cluster:
-          requires: [docker-push, configure-infrastructure]
-      - deploy-docker:
-          requires: [configure-cluster]
+      # - docker-push:
+      #     requires: [test]
+      #     filters:
+      #       branches: 
+      #         only: [ main ]
+      # - deploy-infrastructure:
+      #     filters:
+      #       branches:
+      #         only: [ main ]
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - configure-cluster:
+      #     requires: [docker-push, configure-infrastructure]
+      # - deploy-docker:
+      #     requires: [configure-cluster]
 
 
       # - deploy-infrastructure
